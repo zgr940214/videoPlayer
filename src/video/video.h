@@ -14,6 +14,8 @@
 #define MAX_AUDIO_STREAM    8
 #define MAX_AUDIO_CHNS      8
 
+/// @brief 每个source 有一个， 每个source 有一个video_source 包含所有关于解码器和视频格式的信息
+///         有一个音频source， 包含所有关于音频格式 和 音频播放设备的handle 以及信息
 typedef struct video_format_context {
     void                *data;
 
@@ -21,7 +23,7 @@ typedef struct video_format_context {
     int                  fm_vstream_id;
     int                  fm_astream_id[MAX_AUDIO_STREAM];
 
-    const char          *filename;
+    const char          *url;
 
 
 } video_format_context_t;

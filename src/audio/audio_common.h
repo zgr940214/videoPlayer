@@ -35,7 +35,7 @@ typedef struct audio_format_info {
 } audio_format_info_t;
 
 
-static inline enum AVSampleFormat convert_audio_format_d2f(enum audio_format format)
+static inline enum AVSampleFormat convert_sample_format_d2f(enum audio_format format)
 {
 	switch (format) {
 	case audio_format::AUDIO_FORMAT_UNKNOWN:
@@ -62,7 +62,7 @@ static inline enum AVSampleFormat convert_audio_format_d2f(enum audio_format for
 	return AV_SAMPLE_FMT_S16;
 }
 
-static inline enum audio_format convert_audio_format_f2d(enum AVSampleFormat format)
+static inline enum audio_format convert_sample_format_f2d(enum AVSampleFormat format)
 {
 	switch (format) {
 	case AV_SAMPLE_FMT_U8:
@@ -110,6 +110,16 @@ static inline size_t get_audio_bytes_per_channel(audio_format format)
 	}
 
 	return 0;
+}
+
+static inline void Codec2AudioFomat(const AVCodecContext *codec_ctx, audio_format_info_t *info) {
+	info->nChannels = codec_ctx->channels;
+	info->nSamplesPerSec = codec_ctx->sample_rate;
+	info->sampleFormat = codec_ctx->sample_fmt;
+	info->chn_layout = codec_ctx->channel_layout;
+
+	info->wBitsPerSample = av_get_bytes_per_sample(codec_ctx->sample_fmt) * 8;
+	info->nBlockAlign = info->nChannels * info->wBitsPerSample / 8;
 }
 
 #endif

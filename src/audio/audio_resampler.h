@@ -18,15 +18,15 @@ typedef struct audio_resampler {
     struct SwrContext       		*context;
 	
 	uint8_t							*output_buf[MAX_AV_PLANES];
-	const audio_format_info_t		*input_info;
-	const audio_format_info_t		*output_info;
+	uint8_t							valid_chns;
+	uint32_t						nbytes_per_channels;
+
+	audio_format_info_t				*input_info;
+	audio_format_info_t				*output_info;
 } audio_resampler_t;
 
 int create_audio_resampler(audio_resampler_t **resampler, void *src);
 
-int init_audio_resampler(audio_resampler_t *resampler, 
-							audio_format_info_t *src_fmt, audio_format_info_t *dev_fmt);
-
-int resample(uint8_t** input, uint32_t sample_count_per_chn, audio_resampler_t *resampler);
+int resample_audio(uint8_t** input, uint32_t sample_count_per_chn, audio_resampler_t *resampler);
 
 #endif

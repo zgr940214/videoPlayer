@@ -158,16 +158,36 @@ void InitializeCom() {
         }
 };
 
+static inline void SampleFmt2WaveFmt(WORD &WaveFormatTag, enum AVSampleFormat sample_fmt) {
+    switch (sample_fmt) {
+        case AV_SAMPLE_FMT_FLT:
+        case AV_SAMPLE_FMT_FLTP:
+            {
+                WaveFormatTag = WAVE_FORMAT_IEEE_FLOAT;
+                return;
+            }
+        case AV_SAMPLE_FMT_S16:
+        case AV_SAMPLE_FMT_S16P:
+        case AV_SAMPLE_FMT_S32:
+        case AV_SAMPLE_FMT_S32P:
+        default:
+             {
+                WaveFormatTag = WAVE_FORMAT_PCM;
+                return;
+            }
+    }
+}
+
 /// @brief 从ffmpeg AVcodecContext初始化 AudioDevice
 /// @param aDev 
 /// @param codecCtx 
-void InitializeAudioParams(AudioDevice_t& aDev, AVCodecContext* codecCtx) {
+void InitializeAudioParams(audio_device_t& aDev, AVCodecContext* codecCtx) {
     // 设置WAVE格式
     aDev.inputWfx->nSamplesPerSec = codecCtx->sample_rate;
     aDev.inputWfx->wBitsPerSample = av_get_bytes_per_sample(codecCtx->sample_fmt) * 8;
     aDev.inputWfx->nChannels = codecCtx->ch_layout.nb_channels;
     aDev.inputWfx->cbSize = 0;
-    aDev.inputWfx->wFormatTag = WAVE_FORMAT_PCM;
+    SampleFmt2WaveFmt(aDev.inputWfx->wFormatTag, codecCtx->sample_fmt);
     aDev.inputWfx->nBlockAlign = (aDev.inputWfx->wBitsPerSample / 8) * aDev.inputWfx->nChannels;
     aDev.inputWfx->nAvgBytesPerSec = aDev.inputWfx->nSamplesPerSec * aDev.inputWfx->nBlockAlign;
 };
@@ -177,7 +197,7 @@ void InitializeAudioParams(AudioDevice_t& aDev, AVCodecContext* codecCtx) {
 ///         经过初始化之后， 后续的音频处理都会用到这个结构进行播放。         
 /// @param aDev 音频设备结构
 /// @return 0 成功， < 0 失败
-static int OpenAudioDev(AudioDevice_t *aDev) {
+static int OpenAudioDev(audio_device_t *aDev) {
     HRESULT hr;
     if (!aDev) {
         fprintf(stderr, "audioDevice_t is not created\n");
@@ -261,13 +281,13 @@ static int OpenAudioDev(AudioDevice_t *aDev) {
 /// @param codec_ctx 
 /// @param aDev 
 /// @return 
-int InitAudioDev(mem_pool_t *pool, AVCodecContext *codec_ctx, AudioDevice_t ** aDev) {
+int InitAudioDev(mem_pool_t *pool, AVCodecContext *codec_ctx, audio_device_t **aDev) {
     int ret;
     if (*aDev) {
         fprintf(stderr, "Audio device already initilized\n");
         return -1;
     }
-    *aDev = (AudioDevice_t *)mem_alloc(pool, sizeof(AudioDevice_t), 1);
+    *aDev = (audio_device_t *)mem_alloc(pool, sizeof(audio_device_t), 1);
     
     InitializeAudioParams(**aDev, codec_ctx);
 
@@ -280,7 +300,7 @@ int InitAudioDev(mem_pool_t *pool, AVCodecContext *codec_ctx, AudioDevice_t ** a
     return 0;// successful
 };
 
-audio_format_info_t GetAudioDevFormat(AudioDevice_t *dev) {
-    audio_format_info_t tmp_dev_format;
-    ConvertWfx2AudioFormat(dev->wfx, audio_format_info_t *info)
+int GetAudioDevFormat(audio_device_t *dev, audio_format_info_t *info) {
+    ConvertWfx2AudioFormat(dev->wfx, info);
+    return 0;
 };

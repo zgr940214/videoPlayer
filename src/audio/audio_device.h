@@ -28,7 +28,7 @@
         size_t              currentBuffer;
         CRITICAL_SECTION    cs;      // 互斥
         HANDLE              event;  //同步事件
-    } AudioDevice_t;
+    } audio_device_t;
 
     int ConvertWfx2AudioFormat(WAVEFORMATEX *wfx, audio_format_info_t *info);
 
@@ -42,8 +42,8 @@
 
 void InitializeCom();
 
-int InitAudioDev(mem_pool_t *pool, AVCodecContext *ctx, AudioDevice_t ** aDev);
+int InitAudioDev(mem_pool_t *pool, AVCodecContext *ctx, audio_device_t ** aDev);
 
-audio_format_info_t GetAudioDevFormat(AudioDevice_t *dev);
+int GetAudioDevFormat(audio_device_t *dev, audio_format_info_t *info);
 
 #endif
