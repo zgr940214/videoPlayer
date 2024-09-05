@@ -41,8 +41,9 @@ using audio_callback = std::function<void(AVFrame*)>;
 AVFormatContext *fmt_ctx = NULL;
 AVCodecContext  *dec_ctx = NULL;
 AVStream        *audio = NULL;
+HANDLE          eventHandle;          
 int             a_stream_id = -1;
-static const char *file_name = "test.wav";
+static const char *file_name = "test.mp4";
 
 struct AudioPlaybackParams {
     int sampleRate;
@@ -172,6 +173,9 @@ static int openCodecContext(int *stream_id, AVCodecContext **codec_ctx,
             printf("================codec info===============\n");
             printf(" samplerate: %d, channels: %d", (*codec_ctx)->sample_rate, 
                 (*codec_ctx)->channels);
+            const char* profile_name = av_get_profile_name((*codec_ctx)->codec, (*codec_ctx)->profile);
+            printf(" codec_id: %d codec_name: %s profile_name:%s\n", 
+                (*codec_ctx)->codec_id, (*codec_ctx)->codec->name, profile_name);
             printf("time base: num: %d, den: %d",(*codec_ctx)->time_base.num, (*codec_ctx)->time_base.den);
             printf("========================================\n");
 
@@ -351,13 +355,14 @@ static int DecodePacket(AVCodecContext *codec_ctx, const AVPacket *pkt, audio_ca
 
     while (ret >= 0) {
         ret = avcodec_receive_frame(codec_ctx, frame);
-        if (ret != 0) {
+        if (ret < 0) {
             return ret;
         }
         if (codec_ctx->codec_type == AVMEDIA_TYPE_AUDIO) {
             callback(frame);
         }
     }
+    av_frame_free(&frame);
     return 0;
 }
 
@@ -380,78 +385,7 @@ int InitializeAudioClient(AudioPlaybackParams& params) {
         fprintf(stderr, "2\n");
         exit(1);
     }
-
-   // 激活AudioCLient 接口
-    hr = pDefaultDevice->Activate(IID_IAudioClient, CLSCTX_ALL, 
-        NULL, (void **)&params.audio_client);
-    if (FAILED(hr)) {
-        fprintf(stderr, "%s: Failed to activate device: %08lX", 
-            __FUNCTION__, hr);
-            return -1;
-    }
-
-    // 获取设备最佳格式
-    hr = params.audio_client->GetMixFormat(&params.devWfx);
-    if (FAILED(hr)) {
-        fprintf(stderr, "%s: Failed to get mix format: %08lX",
-            __FUNCTION__, hr);
-            return -1;
-    }
-    // 检查输入格式是否支持
-    WAVEFORMATEX *close_wfx;
-    if (params.devWfx) {
-        hr = params.audio_client->IsFormatSupported(AUDCLNT_SHAREMODE_SHARED, &params.wfx, &close_wfx);
-        if (FAILED(hr)) {
-            if (close_wfx != nullptr) { // 如果查询到最接近的格式，那么意味着该音频流需要做resample处理转换格式
-                CoTaskMemFree(params.devWfx);
-                params.devWfx = close_wfx;
-                fprintf(stderr, "Find closest fotmat\n");
-            } else { // format is not supported
-                fprintf(stderr, "%s: Format not supported: %08lX",
-                __FUNCTION__, hr);
-                return -1;
-            }
-        }
-    }
-
-    DWORD initStreamFlags = ( AUDCLNT_STREAMFLAGS_RATEADJUST 
-                        | AUDCLNT_STREAMFLAGS_AUTOCONVERTPCM
-                        | AUDCLNT_STREAMFLAGS_SRC_DEFAULT_QUALITY );
-
-    std::cerr << "\naudio_client wfx: " << "bits per sample: " << params.devWfx->wBitsPerSample
-        << "nsamples :" << params.devWfx->nSamplesPerSec << "\n"
-        <<"block align: " << params.devWfx->nBlockAlign << "format Tag:" << params.devWfx->wFormatTag 
-        <<"\n======================\n";
-
-    hr = params.audio_client->Initialize(
-        AUDCLNT_SHAREMODE_SHARED, initStreamFlags, 10000000, 0,
-        params.devWfx, NULL);
-    if (FAILED(hr)) {
-        fprintf(stderr, "%s: Failed to initialize: %08lX", 
-            __FUNCTION__, hr);
-        return -1;
-    }
-
-    // 初始化 IAudioRenderCLient
-    hr = params.audio_client->GetService(IID_IAudioRenderClient, (void**)&params.render);
-    if (FAILED(hr)) {
-        fprintf(stderr, "Failed to get audio render client: %08lX\n", hr);
-        return -1;
-    }
-
-     // 获取缓冲区大小
-    hr = params.audio_client->GetBufferSize(&params.bufferFrameSize);
-    if (FAILED(hr)) {
-        fprintf(stderr, "Failed to get buffer size: %08lX\n", hr);
-        return -1;
-    }
-
-    hr = params.audio_client->Start();
-    if (FAILED(hr)) {
-        fprintf(stderr, "Failed to start audio client: %08lX\n", hr);
-        return hr;
-    }
-    
+    // 枚举设备
     IMMDeviceCollection* pDeviceCollections;
     hr = pDeviceEnumerator->EnumAudioEndpoints(eRender, DEVICE_STATE_ACTIVE, &pDeviceCollections);
     if (FAILED(hr)) {
@@ -528,6 +462,93 @@ int InitializeAudioClient(AudioPlaybackParams& params) {
         std::cout << "==============\n";
     }
 
+   // 激活AudioCLient 接口
+    hr = pDefaultDevice->Activate(IID_IAudioClient, CLSCTX_ALL, 
+        NULL, (void **)&params.audio_client);
+    if (FAILED(hr)) {
+        fprintf(stderr, "%s: Failed to activate device: %08lX", 
+            __FUNCTION__, hr);
+            return -1;
+    }
+    
+    // 获取设备最佳格式
+    hr = params.audio_client->GetMixFormat(&params.devWfx);
+    if (FAILED(hr)) {
+        fprintf(stderr, "%s: Failed to get mix format: %08lX",
+            __FUNCTION__, hr);
+            return -1;
+    }
+    // 检查输入格式是否支持
+    WAVEFORMATEX *close_wfx;
+    if (params.devWfx) {
+        printf("support test\n");
+        hr = params.audio_client->IsFormatSupported(AUDCLNT_SHAREMODE_SHARED, &params.wfx, &close_wfx);
+        if (FAILED(hr)) {
+            if (close_wfx != nullptr) { // 如果查询到最接近的格式，那么意味着该音频流需要做resample处理转换格式
+                CoTaskMemFree(params.devWfx);
+                params.devWfx = close_wfx;
+                fprintf(stderr, "Find closest fotmat\n");
+            } else { // format is not supported
+                fprintf(stderr, "%s: Format not supported: %08lX",
+                __FUNCTION__, hr);
+                return -1;
+            }
+        } else {
+            memcpy(params.devWfx, &params.wfx, sizeof(WAVEFORMATEX));
+            params.devWfx->wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
+        }
+    }
+
+    DWORD initStreamFlags = (AUDCLNT_STREAMFLAGS_EVENTCALLBACK | AUDCLNT_STREAMFLAGS_AUTOCONVERTPCM
+                        | AUDCLNT_STREAMFLAGS_SRC_DEFAULT_QUALITY );
+
+    std::cerr << "\naudio_client wfx: " << "bits per sample: " << params.devWfx->wBitsPerSample
+        << "nsamples :" << params.devWfx->nSamplesPerSec << "\n"
+        <<"block align: " << params.devWfx->nBlockAlign << "format Tag:" << params.devWfx->wFormatTag 
+        <<"\n======================\n";
+
+    int buffer_length_msec = 5000;
+	REFERENCE_TIME dur = buffer_length_msec * 1000 * 10;
+
+    hr = params.audio_client->Initialize(
+        AUDCLNT_SHAREMODE_SHARED, initStreamFlags, dur, 0,
+        params.devWfx, NULL);
+    if (FAILED(hr)) {
+        fprintf(stderr, "%s: Failed to initialize: %08lX", 
+            __FUNCTION__, hr);
+        return -1;
+    }
+
+    // 初始化 IAudioRenderCLient
+    hr = params.audio_client->GetService(IID_IAudioRenderClient, (void**)&params.render);
+    if (FAILED(hr)) {
+        fprintf(stderr, "Failed to get audio render client: %08lX\n", hr);
+        return -1;
+    }
+
+     // 获取缓冲区大小
+    hr = params.audio_client->GetBufferSize(&params.bufferFrameSize);
+    if (FAILED(hr)) {
+        fprintf(stderr, "Failed to get buffer size: %08lX\n", hr);
+        return -1;
+    }
+
+    eventHandle = CreateEvent(NULL, FALSE, FALSE, NULL);
+    if (eventHandle == NULL) {
+        //
+    }
+
+    hr = params.audio_client->SetEventHandle(eventHandle);
+    if (FAILED(hr)) {
+        // 处理错误
+    }
+
+    hr = params.audio_client->Start();
+    if (FAILED(hr)) {
+        fprintf(stderr, "Failed to start audio client: %08lX\n", hr);
+        return hr;
+    }
+
     pDeviceEnumerator->Release();
     pDefaultDevice->Release();
     return 0;
@@ -540,46 +561,117 @@ int InitializeAudioClient(AudioPlaybackParams& params) {
 HRESULT PlayAudio(AVFrame *frame, AudioPlaybackParams audio_params, AVCodecContext *codec_ctx) {
     HRESULT hr;
     static uint8_t *output[8];
-    static int output_size = 0;
+    static int out_size = 0;
+    static int ssize = 0;
     BYTE* pData = NULL;
     DWORD flags = 0;
     UINT32 bufferFrameCount;
     UINT32 numFramesAvailable;
     UINT32 numFramesToWrite;
     UINT32 numFrameReserve;
-    const int sampleSize = audio_params.bitsPerSample; // 假设目标格式是 16-bit PCM
+    const int sampleSize = 32; // 假设目标格式是 16-bit PCM
     const int frameSize = 4 * audio_params.numChannels;
 
     bufferFrameCount = audio_params.bufferFrameSize;
     // 获取音频帧数据
-    printf("nbsamples %d, chns %d, sampleSize %d, frameSize: %d \n", 
-        frame->nb_samples, frame->channels, sampleSize, frameSize);
+    printf("pts:%d, pkt-dts:%d\n", frame->pts, frame->pkt_dts);
+    // printf("nbsamples %d, chns %d, sampleSize %d, frameSize: %d \n", 
+    //     frame->nb_samples, frame->channels, sampleSize, frameSize);
     int num_samples = frame->nb_samples;  // 获取 AVFrame 中的样本数量
     int channels = frame->channels; // 获取通道数
-    int frameBufferSize = num_samples * channels * (sampleSize / 8); // 计算帧的大小
-    numFrameReserve = frameBufferSize / (sampleSize / 8);
     
     DWORD hnsActualDuration = (double)REFTIMES_PER_SEC *
                         bufferFrameCount / audio_params.devWfx->nSamplesPerSec;
     
-    printf("intput sr %d, output sr %d, intput wbits %d, output wbits %d\n", 
-        frame->sample_rate, audio_params.devWfx->nSamplesPerSec, 
-        codec_ctx->sample_fmt, audio_params.devWfx->wBitsPerSample);
+    // printf("intput sr %d, output sr %d, intput wbits %d, output wbits %d\n", 
+    //     frame->sample_rate, audio_params.devWfx->nSamplesPerSec, 
+    //     codec_ctx->sample_fmt, audio_params.devWfx->wBitsPerSample);
 
-    int outSampleSize = 
-        swrAVFrame(frame, codec_ctx, *audio_params.devWfx, (uint8_t **)&output[0]);
+    switch (codec_ctx->sample_fmt)
+    {
+        case AV_SAMPLE_FMT_U8:
+            {
+                printf("AV_SAMPLE_FMT_U8\n");
+                break;
+            }
+        case AV_SAMPLE_FMT_U8P:
+            {
+                printf("AV_SAMPLE_FMT_U8P\n");
+                break;
+            }
+        case AV_SAMPLE_FMT_S16:
+            {
+                printf("AV_SAMPLE_FMT_S16\n");
+                break;
+            }
+        case AV_SAMPLE_FMT_S16P:
+            {
+                printf("AV_SAMPLE_FMT_S16P\n");
+                break;
+            }
+        case AV_SAMPLE_FMT_S32:
+            {
+                printf("AV_SAMPLE_FMT_S32\n");
+                break;
+            }
+        case AV_SAMPLE_FMT_S32P:
+            {
+                printf("AV_SAMPLE_FMT_S32P\n");
+                break;
+            }
+        case AV_SAMPLE_FMT_FLT:
+            {
+                printf("AV_SAMPLE_FMT_FLT\n");
+                break;
+            }
+        case AV_SAMPLE_FMT_FLTP:
+            {
+                printf("AV_SAMPLE_FMT_FLTP\n");
+                break;
+            }
+        default:
+            {
+                fprintf(stderr, "wrong AVSampleFormat\n");
+                return -1;
+            }
+    }
 
-    frameBufferSize = outSampleSize * sampleSize / 8;
-    numFrameReserve = outSampleSize * 2;
-    printf("out %d \n", outSampleSize);
+    int factor = 33;
+    if (output[0] == nullptr) {
+        out_size = bufferFrameCount * frameSize * 2;
+        output[0] = (uint8_t *)malloc(out_size);
+        out_size /= 2;
+    }
+    // int outSampleSize = 
+    //     swrAVFrame(frame, codec_ctx, *audio_params.devWfx, (uint8_t **)&output[0]);
+
+    if (ssize + frame->nb_samples * 8 < out_size) {
+        float *p = (float*)(output[0] + ssize);
+        float *c1 = (float*)frame->data[0];
+        float *c2 = (float*)frame->data[1];
+        for(int i = 0; i < frame->nb_samples; i++) {
+            p[2*i] = c1[i];
+            p[2*i + 1] = c2[i];
+        }
+        ssize += frame->nb_samples * 8;
+        return 0;
+    }
+    numFrameReserve = ssize / 8;
     do {
+        // LARGE_INTEGER start, end, freq;
+        // QueryPerformanceFrequency(&freq);
+        // QueryPerformanceCounter(&start);
         // 等待有可写入的缓冲区
-        hr = audio_params.audio_client->GetCurrentPadding(&numFramesAvailable);
-        if (FAILED(hr)) {
-            fprintf(stderr, "Failed to get current padding: %08lX\n", hr);
-            break;
-        } else {
-            printf("num padding %d, buffer count %d\n", numFramesAvailable, bufferFrameCount);
+        WaitForSingleObject(eventHandle, INFINITE);
+
+        while(true) {
+            hr = audio_params.audio_client->GetCurrentPadding(&numFramesAvailable);
+            if (FAILED(hr)) {
+                fprintf(stderr, "Failed to get current padding: %08lX\n", hr);
+                break;
+            }
+            if (numFramesAvailable == 0)
+                break;
         }
 
         numFramesToWrite = (bufferFrameCount - numFramesAvailable) > numFrameReserve ? 
@@ -587,7 +679,7 @@ HRESULT PlayAudio(AVFrame *frame, AudioPlaybackParams audio_params, AVCodecConte
 
         numFrameReserve -= numFramesToWrite;
 
-        if (numFramesToWrite == 0) {
+        if (numFramesToWrite <= 0) {
             break;
         }
 
@@ -596,28 +688,8 @@ HRESULT PlayAudio(AVFrame *frame, AudioPlaybackParams audio_params, AVCodecConte
             fprintf(stderr, "Failed to get buffer: %08lX\n", hr);
             break;
         }
-#define PI 3.14159265358979323846
-            double frequency = 440.0;  // A4音调的频率，440 Hz
-            double amplitude = 2147483647.0;  // 32位整数的最大幅度
-            double phase = 0;
-            double phaseIncrement = 2 * PI * frequency / 48000;
-        //memcpy(pData, frame->data[0], numFramesToWrite * frameSize);
-        int *pSample = (int*) pData;
-        int numSamples = numFramesToWrite / 2;
-        for (int i = 0; i < numSamples; i++) {
-           double value = amplitude * sin(phase);
-            phase += phaseIncrement;
-            if (phase >= 2 * PI)
-                phase -= 2 * PI;
 
-            // 假设为立体声，复制相同的值到两个通道
-            pSample[2 * i] = (int)value;
-            pSample[2 * i + 1] = (int )value;
-            if (frameSize == 8) { // 如果是立体声，frameSize应该是8字节
-                pSample[i + 1] = (int)value;
-                i++;
-            }
-        }
+        memcpy(pData, output[0], numFramesToWrite * frameSize);
 
         hr = audio_params.render->ReleaseBuffer(numFramesToWrite, 0);
         if (FAILED(hr)) {
@@ -625,9 +697,15 @@ HRESULT PlayAudio(AVFrame *frame, AudioPlaybackParams audio_params, AVCodecConte
             break;
         }
         printf("numFramesToWrite:%d\n", numFramesToWrite);
-        //Sleep((DWORD)(hnsActualDuration/REFTIMES_PER_MILLISEC/10));
+
+        // QueryPerformanceCounter(&end);
+        // double elapsedTime = (double)(end.QuadPart - start.QuadPart) * 1000.0 / freq.QuadPart;
+
+        timeBeginPeriod(1); // Set the system timer resolution to 1 ms
+        Sleep((DWORD)(((double)hnsActualDuration/(double)REFTIMES_PER_MILLISEC) / 2));
+        timeEndPeriod(1); // Reset the timer resolution
     }while(true);
-    Sleep((DWORD)(hnsActualDuration/REFTIMES_PER_MILLISEC/10));
+    ssize = 0;
 
     return 0;
 }
@@ -654,10 +732,10 @@ int main() {
 
     AVPacket *pkt = NULL;
     pkt = av_packet_alloc();
-    while(av_read_frame(fmt_ctx, pkt) >= 0) {
+    ret = 0;
+    while((ret = av_read_frame(fmt_ctx, pkt)) >= 0) {
         DecodePacket(dec_ctx, pkt, callback);
-        av_packet_free(&pkt);
-        pkt = av_packet_alloc();
+        av_packet_unref(pkt);
     }
 
     AudioClientStop(params);
