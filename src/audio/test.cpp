@@ -636,7 +636,6 @@ HRESULT PlayAudio(AVFrame *frame, AudioPlaybackParams audio_params, AVCodecConte
             }
     }
 
-    int factor = 33;
     if (output[0] == nullptr) {
         out_size = bufferFrameCount * frameSize * 2;
         output[0] = (uint8_t *)malloc(out_size);
@@ -658,10 +657,6 @@ HRESULT PlayAudio(AVFrame *frame, AudioPlaybackParams audio_params, AVCodecConte
     }
     numFrameReserve = ssize / 8;
     do {
-        // LARGE_INTEGER start, end, freq;
-        // QueryPerformanceFrequency(&freq);
-        // QueryPerformanceCounter(&start);
-        // 等待有可写入的缓冲区
         WaitForSingleObject(eventHandle, INFINITE);
 
         while(true) {
@@ -701,9 +696,7 @@ HRESULT PlayAudio(AVFrame *frame, AudioPlaybackParams audio_params, AVCodecConte
         // QueryPerformanceCounter(&end);
         // double elapsedTime = (double)(end.QuadPart - start.QuadPart) * 1000.0 / freq.QuadPart;
 
-        timeBeginPeriod(1); // Set the system timer resolution to 1 ms
-        Sleep((DWORD)(((double)hnsActualDuration/(double)REFTIMES_PER_MILLISEC) / 2));
-        timeEndPeriod(1); // Reset the timer resolution
+        Sleep((DWORD)(((double)hnsActualDuration/(double)REFTIMES_PER_MILLISEC)));
     }while(true);
     ssize = 0;
 
