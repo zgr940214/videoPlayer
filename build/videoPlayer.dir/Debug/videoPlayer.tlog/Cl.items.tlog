@@ -1,1 +1,8 @@
-C:\Users\MiddleW\Desktop\video\src\test.cpp;C:\Users\MiddleW\Desktop\video\build\videoPlayer.dir\Debug\test.obj
+C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video\test.cpp;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\videoPlayer.dir\Debug\test.obj
+C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad\glad.c;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\videoPlayer.dir\Debug\glad.obj
+C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\clock.cc;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\videoPlayer.dir\Debug\clock.obj
+C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_element_array.cpp;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\videoPlayer.dir\Debug\gl_element_array.obj
+C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_shader.cpp;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\videoPlayer.dir\Debug\gl_shader.obj
+C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_texture2D.cpp;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\videoPlayer.dir\Debug\gl_texture2D.obj
+C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_vertex_array.cpp;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\videoPlayer.dir\Debug\gl_vertex_array.obj
+C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_vertex_buff.cpp;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\videoPlayer.dir\Debug\gl_vertex_buff.obj

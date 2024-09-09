@@ -1,6 +1,6 @@
-^C:\USERS\MIDDLEW\DESKTOP\VIDEO\BUILD\CMAKEFILES\E79F78BE44BF958430E65C73A704A45A\GENERATE.STAMP.RULE
+^C:\USERS\MIDDLEW\DESKTOP\VIDEOPLAYER\VIDEOPLAYER\BUILD\CMAKEFILES\211578BC460F9134A0918642EAD0398F\GENERATE.STAMP.RULE
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/MiddleW/Desktop/video -BC:/Users/MiddleW/Desktop/video/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/MiddleW/Desktop/video/build/videoPlayer.sln
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/MiddleW/Desktop/videoPlayer/videoPlayer -BC:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/videoPlayer.sln
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

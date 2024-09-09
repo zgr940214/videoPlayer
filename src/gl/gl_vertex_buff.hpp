@@ -1,5 +1,5 @@
 #pragma once
-#include "glad/glad.h"
+#include "glad.h"
 #include "gl_debug.hpp"
 
 class VertexBuffer {

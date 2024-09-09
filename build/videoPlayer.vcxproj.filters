@@ -1,16 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\MiddleW\Desktop\video\src\test.cpp">
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video\test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\clock.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_element_array.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_texture2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_vertex_array.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_vertex_buff.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\MiddleW\Desktop\video\CMakeLists.txt" />
+    <CustomBuild Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{7AA1B1A2-993E-369A-B1A4-8907D95DEC84}</UniqueIdentifier>
+      <UniqueIdentifier>{8889D338-163E-362F-88DF-A7ECEAEBC913}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

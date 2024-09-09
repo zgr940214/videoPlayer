@@ -1,5 +1,5 @@
 #include "gl_shader.hpp"
-#include "glm/gtc/type_ptr.hpp"
+#include "gtc/type_ptr.hpp"
 #include "gl_debug.hpp"
 #include "gl_texture2D.hpp"
 
@@ -190,8 +190,7 @@ std::string Shader::ReadShaderFile(const char *glsl) {
 	return ss.str();
 }
 
-void Shader::BindTexture(std::string name, int slot, 
-    std::shared_ptr<Texture2D> texture, bool useShader) const{
+void Shader::BindTexture(std::string name, int slot, bool useShader) const{
         if (useShader)
             this->Use();
         SetInteger(name.c_str(), slot);
@@ -229,14 +228,6 @@ void Shader::SetVector2f(const char *name, const glm::vec2 &value, bool useShade
     GLCALL(glUniform2f(location, value.x, value.y));
 }
 
-void Shader::SetVector2f (const char *name, const eric::Vector2f &value, bool useShader)const 
-{
-    if(useShader) 
-        this->Use();
-    GLCALL(auto location = glGetUniformLocation(this->m_render_id, name));
-    GLCALL(glUniform2f(location, value.x, value.y));
-};
-
 void Shader::SetVector3f(const char *name, float x, float y, float z, bool useShader)const
 {
     if (useShader)
@@ -252,14 +243,6 @@ void Shader::SetVector3f(const char *name, const glm::vec3 &value, bool useShade
 	GLCALL(auto location = glGetUniformLocation(this->m_render_id, name));
     GLCALL(glUniform3f(location, value.x, value.y, value.z));
 }
-
-void Shader::SetVector3f (const char *name, const eric::Vector3f &value, bool useShader) const 
-{
-    if (useShader)
-        this->Use();
-    GLCALL(auto location = glGetUniformLocation(this->m_render_id, name));
-    GLCALL(glUniform3f(location, value.x, value.y, value.z));
-};
 
 void Shader::SetVector4f(const char *name, float x, float y, float z, float w, bool useShader)const 
 {
@@ -285,16 +268,6 @@ void Shader::SetMatrix4(const char *name, const glm::mat4 &matrix, bool useShade
 	GLCALL(auto location = glGetUniformLocation(this->m_render_id, name));
     GLCALL(glUniformMatrix4fv(location, 1, false, &matrix[0][0]));
 }
-
-void Shader::SetMatrix4(const char *name, const eric::Transform3f &matrix, bool useShader) const 
-{
-    float mat[16];
-    matrix.to_array(mat);
-    if (useShader)
-        this->Use();
-    GLCALL(auto location = glGetUniformLocation(m_render_id, name));
-    GLCALL(glUniformMatrix4fv(location, 1, false, mat));
-};		
 
 Shader& Shader::operator ==(Shader &&other) {
 	if (other.is_init) {

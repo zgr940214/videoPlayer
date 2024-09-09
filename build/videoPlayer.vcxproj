@@ -22,7 +22,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{495F687E-2816-32EC-B6CA-75B1941E164A}</ProjectGuid>
+    <ProjectGuid>{5F36A7C1-ED9D-33BB-BC81-858C6BEBAD78}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
     <Platform>x64</Platform>
@@ -59,25 +59,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\MiddleW\Desktop\video\build\Debug\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">videoPlayer.dir\Debug\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">videoPlayer</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\MiddleW\Desktop\video\build\Release\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">videoPlayer.dir\Release\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">videoPlayer</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\MiddleW\Desktop\video\build\MinSizeRel\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\MinSizeRel\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">videoPlayer.dir\MinSizeRel\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">videoPlayer</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\MiddleW\Desktop\video\build\RelWithDebInfo\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\RelWithDebInfo\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">videoPlayer.dir\RelWithDebInfo\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">videoPlayer</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
@@ -86,7 +86,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\video\src\audio;C:\Users\MiddleW\Desktop\video\src\gl;C:\Users\MiddleW\Desktop\video\src\video;C:\Users\MiddleW\Desktop\video\src\base;C:\Users\MiddleW\Desktop\video\dependency\ffmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\audio;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glm;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\base;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependecy\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\ffmpeg\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -101,10 +101,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\video\src\audio;C:\Users\MiddleW\Desktop\video\src\gl;C:\Users\MiddleW\Desktop\video\src\video;C:\Users\MiddleW\Desktop\video\src\base;C:\Users\MiddleW\Desktop\video\dependency\ffmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\audio;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glm;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\base;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependecy\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\ffmpeg\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\video\src\audio;C:\Users\MiddleW\Desktop\video\src\gl;C:\Users\MiddleW\Desktop\video\src\video;C:\Users\MiddleW\Desktop\video\src\base;C:\Users\MiddleW\Desktop\video\dependency\ffmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\audio;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glm;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\base;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependecy\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\ffmpeg\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -112,13 +112,13 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>mfplat.lib;mf.lib;mfuuid.lib;wmcodecdspuuid.lib;ws2_32.lib;Secur32.lib;Bcrypt.lib;strmiids.lib;swresample.lib;swscale.lib;avcodec.lib;avformat.lib;avutil.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/Users/MiddleW/Desktop/video;C:/Users/MiddleW/Desktop/video/$(Configuration);C:/Users/MiddleW/Desktop/video/dependency;C:/Users/MiddleW/Desktop/video/dependency/$(Configuration);C:/Users/MiddleW/Desktop/video/dependency/ffmpeg/lib;C:/Users/MiddleW/Desktop/video/dependency/ffmpeg/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mfplat.lib;mf.lib;mfuuid.lib;wmcodecdspuuid.lib;ws2_32.lib;Secur32.lib;Bcrypt.lib;strmiids.lib;ole32.lib;avcodec.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;opengl32.lib;glfw3.lib;fdk-aac.lib;libx264.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/GLFW/lib;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/GLFW/lib/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/ffmpeg/lib;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/ffmpeg/lib/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/lib;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/MiddleW/Desktop/video/build/Debug/videoPlayer.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/MiddleW/Desktop/video/build/Debug/videoPlayer.pdb</ProgramDataBaseFile>
+      <ImportLibrary>C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/Debug/videoPlayer.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/Debug/videoPlayer.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -127,7 +127,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\video\src\audio;C:\Users\MiddleW\Desktop\video\src\gl;C:\Users\MiddleW\Desktop\video\src\video;C:\Users\MiddleW\Desktop\video\src\base;C:\Users\MiddleW\Desktop\video\dependency\ffmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\audio;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glm;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\base;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependecy\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\ffmpeg\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
@@ -142,10 +142,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\video\src\audio;C:\Users\MiddleW\Desktop\video\src\gl;C:\Users\MiddleW\Desktop\video\src\video;C:\Users\MiddleW\Desktop\video\src\base;C:\Users\MiddleW\Desktop\video\dependency\ffmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\audio;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glm;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\base;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependecy\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\ffmpeg\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\video\src\audio;C:\Users\MiddleW\Desktop\video\src\gl;C:\Users\MiddleW\Desktop\video\src\video;C:\Users\MiddleW\Desktop\video\src\base;C:\Users\MiddleW\Desktop\video\dependency\ffmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\audio;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glm;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\base;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependecy\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\ffmpeg\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -153,13 +153,13 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>mfplat.lib;mf.lib;mfuuid.lib;wmcodecdspuuid.lib;ws2_32.lib;Secur32.lib;Bcrypt.lib;strmiids.lib;swresample.lib;swscale.lib;avcodec.lib;avformat.lib;avutil.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/Users/MiddleW/Desktop/video;C:/Users/MiddleW/Desktop/video/$(Configuration);C:/Users/MiddleW/Desktop/video/dependency;C:/Users/MiddleW/Desktop/video/dependency/$(Configuration);C:/Users/MiddleW/Desktop/video/dependency/ffmpeg/lib;C:/Users/MiddleW/Desktop/video/dependency/ffmpeg/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mfplat.lib;mf.lib;mfuuid.lib;wmcodecdspuuid.lib;ws2_32.lib;Secur32.lib;Bcrypt.lib;strmiids.lib;ole32.lib;avcodec.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;opengl32.lib;glfw3.lib;fdk-aac.lib;libx264.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/GLFW/lib;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/GLFW/lib/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/ffmpeg/lib;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/ffmpeg/lib/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/lib;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/MiddleW/Desktop/video/build/Release/videoPlayer.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/MiddleW/Desktop/video/build/Release/videoPlayer.pdb</ProgramDataBaseFile>
+      <ImportLibrary>C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/Release/videoPlayer.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/Release/videoPlayer.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -168,7 +168,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\video\src\audio;C:\Users\MiddleW\Desktop\video\src\gl;C:\Users\MiddleW\Desktop\video\src\video;C:\Users\MiddleW\Desktop\video\src\base;C:\Users\MiddleW\Desktop\video\dependency\ffmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\audio;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glm;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\base;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependecy\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\ffmpeg\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
@@ -183,10 +183,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\video\src\audio;C:\Users\MiddleW\Desktop\video\src\gl;C:\Users\MiddleW\Desktop\video\src\video;C:\Users\MiddleW\Desktop\video\src\base;C:\Users\MiddleW\Desktop\video\dependency\ffmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\audio;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glm;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\base;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependecy\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\ffmpeg\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\video\src\audio;C:\Users\MiddleW\Desktop\video\src\gl;C:\Users\MiddleW\Desktop\video\src\video;C:\Users\MiddleW\Desktop\video\src\base;C:\Users\MiddleW\Desktop\video\dependency\ffmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\audio;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glm;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\base;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependecy\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\ffmpeg\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -194,13 +194,13 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>mfplat.lib;mf.lib;mfuuid.lib;wmcodecdspuuid.lib;ws2_32.lib;Secur32.lib;Bcrypt.lib;strmiids.lib;swresample.lib;swscale.lib;avcodec.lib;avformat.lib;avutil.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/Users/MiddleW/Desktop/video;C:/Users/MiddleW/Desktop/video/$(Configuration);C:/Users/MiddleW/Desktop/video/dependency;C:/Users/MiddleW/Desktop/video/dependency/$(Configuration);C:/Users/MiddleW/Desktop/video/dependency/ffmpeg/lib;C:/Users/MiddleW/Desktop/video/dependency/ffmpeg/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mfplat.lib;mf.lib;mfuuid.lib;wmcodecdspuuid.lib;ws2_32.lib;Secur32.lib;Bcrypt.lib;strmiids.lib;ole32.lib;avcodec.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;opengl32.lib;glfw3.lib;fdk-aac.lib;libx264.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/GLFW/lib;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/GLFW/lib/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/ffmpeg/lib;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/ffmpeg/lib/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/lib;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/MiddleW/Desktop/video/build/MinSizeRel/videoPlayer.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/MiddleW/Desktop/video/build/MinSizeRel/videoPlayer.pdb</ProgramDataBaseFile>
+      <ImportLibrary>C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/MinSizeRel/videoPlayer.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/MinSizeRel/videoPlayer.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -209,7 +209,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\video\src\audio;C:\Users\MiddleW\Desktop\video\src\gl;C:\Users\MiddleW\Desktop\video\src\video;C:\Users\MiddleW\Desktop\video\src\base;C:\Users\MiddleW\Desktop\video\dependency\ffmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\audio;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glm;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\base;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependecy\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\ffmpeg\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -223,10 +223,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\video\src\audio;C:\Users\MiddleW\Desktop\video\src\gl;C:\Users\MiddleW\Desktop\video\src\video;C:\Users\MiddleW\Desktop\video\src\base;C:\Users\MiddleW\Desktop\video\dependency\ffmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\audio;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glm;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\base;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependecy\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\ffmpeg\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\video\src\audio;C:\Users\MiddleW\Desktop\video\src\gl;C:\Users\MiddleW\Desktop\video\src\video;C:\Users\MiddleW\Desktop\video\src\base;C:\Users\MiddleW\Desktop\video\dependency\ffmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\audio;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glm;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\base;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependecy\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\ffmpeg\include;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\dependency\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -234,13 +234,13 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>mfplat.lib;mf.lib;mfuuid.lib;wmcodecdspuuid.lib;ws2_32.lib;Secur32.lib;Bcrypt.lib;strmiids.lib;swresample.lib;swscale.lib;avcodec.lib;avformat.lib;avutil.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:/Users/MiddleW/Desktop/video;C:/Users/MiddleW/Desktop/video/$(Configuration);C:/Users/MiddleW/Desktop/video/dependency;C:/Users/MiddleW/Desktop/video/dependency/$(Configuration);C:/Users/MiddleW/Desktop/video/dependency/ffmpeg/lib;C:/Users/MiddleW/Desktop/video/dependency/ffmpeg/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mfplat.lib;mf.lib;mfuuid.lib;wmcodecdspuuid.lib;ws2_32.lib;Secur32.lib;Bcrypt.lib;strmiids.lib;ole32.lib;avcodec.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;opengl32.lib;glfw3.lib;fdk-aac.lib;libx264.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/GLFW/lib;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/GLFW/lib/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/ffmpeg/lib;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/ffmpeg/lib/$(Configuration);C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/lib;C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/dependency/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>C:/Users/MiddleW/Desktop/video/build/RelWithDebInfo/videoPlayer.lib</ImportLibrary>
-      <ProgramDataBaseFile>C:/Users/MiddleW/Desktop/video/build/RelWithDebInfo/videoPlayer.pdb</ProgramDataBaseFile>
+      <ImportLibrary>C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/RelWithDebInfo/videoPlayer.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/RelWithDebInfo/videoPlayer.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <ProjectReference>
@@ -248,11 +248,11 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\MiddleW\Desktop\video\CMakeLists.txt">
+    <CustomBuild Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\CMakeLists.txt">
       <UseUtf8Encoding>Always</UseUtf8Encoding>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/MiddleW/Desktop/video/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/MiddleW/Desktop/video -BC:/Users/MiddleW/Desktop/video/build --check-stamp-file C:/Users/MiddleW/Desktop/video/build/CMakeFiles/generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/MiddleW/Desktop/videoPlayer/videoPlayer -BC:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build --check-stamp-file C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -260,12 +260,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\WindowsPaths.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeCCompiler.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeCXXCompiler.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeRCCompiler.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\MiddleW\Desktop\video\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\WindowsPaths.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeCCompiler.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeCXXCompiler.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeRCCompiler.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/MiddleW/Desktop/video/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/MiddleW/Desktop/video -BC:/Users/MiddleW/Desktop/video/build --check-stamp-file C:/Users/MiddleW/Desktop/video/build/CMakeFiles/generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/MiddleW/Desktop/videoPlayer/videoPlayer -BC:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build --check-stamp-file C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -273,12 +273,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\WindowsPaths.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeCCompiler.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeCXXCompiler.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeRCCompiler.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\MiddleW\Desktop\video\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\WindowsPaths.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeCCompiler.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeCXXCompiler.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeRCCompiler.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/MiddleW/Desktop/video/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/MiddleW/Desktop/video -BC:/Users/MiddleW/Desktop/video/build --check-stamp-file C:/Users/MiddleW/Desktop/video/build/CMakeFiles/generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/MiddleW/Desktop/videoPlayer/videoPlayer -BC:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build --check-stamp-file C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -286,12 +286,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\WindowsPaths.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeCCompiler.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeCXXCompiler.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeRCCompiler.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\MiddleW\Desktop\video\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\WindowsPaths.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeCCompiler.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeCXXCompiler.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeRCCompiler.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/MiddleW/Desktop/video/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/MiddleW/Desktop/video -BC:/Users/MiddleW/Desktop/video/build --check-stamp-file C:/Users/MiddleW/Desktop/video/build/CMakeFiles/generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/MiddleW/Desktop/videoPlayer/videoPlayer -BC:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build --check-stamp-file C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -299,17 +299,24 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\WindowsPaths.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeCCompiler.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeCXXCompiler.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeRCCompiler.cmake;C:\Users\MiddleW\Desktop\video\build\CMakeFiles\3.25.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\MiddleW\Desktop\video\build\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.25\Modules\Platform\WindowsPaths.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeCCompiler.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeCXXCompiler.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeRCCompiler.cmake;C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\3.25.3\CMakeSystem.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\MiddleW\Desktop\video\src\test.cpp" />
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\video\test.cpp" />
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\glad\glad.c" />
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\clock.cc" />
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_element_array.cpp" />
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_shader.cpp" />
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_texture2D.cpp" />
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_vertex_array.cpp" />
+    <ClCompile Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\src\gl\gl_vertex_buff.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\Users\MiddleW\Desktop\video\build\ZERO_CHECK.vcxproj">
-      <Project>{A99A9FCB-7C9A-365E-A76F-11610EFE6198}</Project>
+    <ProjectReference Include="C:\Users\MiddleW\Desktop\videoPlayer\videoPlayer\build\ZERO_CHECK.vcxproj">
+      <Project>{800B9CA9-A955-3F54-8F66-2C4C3269C019}</Project>
       <Name>ZERO_CHECK</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

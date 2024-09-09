@@ -1,6 +1,6 @@
-^C:\USERS\MIDDLEW\DESKTOP\VIDEO\CMAKELISTS.TXT
+^C:\USERS\MIDDLEW\DESKTOP\VIDEOPLAYER\VIDEOPLAYER\CMAKELISTS.TXT
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/MiddleW/Desktop/video -BC:/Users/MiddleW/Desktop/video/build --check-stamp-file C:/Users/MiddleW/Desktop/video/build/CMakeFiles/generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/MiddleW/Desktop/videoPlayer/videoPlayer -BC:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build --check-stamp-file C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/CMakeFiles/generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

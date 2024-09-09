@@ -1,7 +1,6 @@
 #pragma once
-#include "glad/glad.h"
-#include "glm/glm.hpp"
-#include "src/tool/transform.hpp"
+#include "glad.h"
+#include "glm.hpp"
 #include <tuple>
 #include <iostream>
 #include <memory>
@@ -28,20 +27,17 @@ public:
 	const Shader& Use() const;
 	void UnUse() const;
 
-	void BindTexture(std::string name, int slot, std::shared_ptr<Texture2D> texture, bool useShader=false) const;
+	void BindTexture(std::string name, int slot, bool useShader=false) const;
 	
 	void    SetFloat    (const char *name, float value, bool useShader = false) const;
     void    SetInteger  (const char *name, int value, bool useShader = false) const;
     void    SetVector2f (const char *name, float x, float y, bool useShader = false) const;
     void    SetVector2f (const char *name, const glm::vec2 &value, bool useShader = false) const;
-    void    SetVector2f (const char *name, const eric::Vector2f &value, bool useShader = false) const;
     void    SetVector3f (const char *name, float x, float y, float z, bool useShader = false) const;
     void    SetVector3f (const char *name, const glm::vec3 &value, bool useShader = false) const;
-    void    SetVector3f (const char *name, const eric::Vector3f &value, bool useShader = false) const;
     void    SetVector4f (const char *name, float x, float y, float z, float w, bool useShader = false) const;
     void    SetVector4f (const char *name, const glm::vec4 &value, bool useShader = false) const;
     void    SetMatrix4  (const char *name, const glm::mat4 &matrix, bool useShader = false) const;
-    void    SetMatrix4  (const char *name, const eric::Transform3f &matrix, bool useShader = false) const;		
 
 	Shader& operator ==(Shader &&other);
 	Shader& operator ==(Shader &other);

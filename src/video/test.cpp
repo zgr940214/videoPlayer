@@ -1,18 +1,34 @@
-#include "glm/glm.hpp"
-#include "glad/glad.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include "glad.h"
+//#define STB_IMAGE_IMPLEMENTATION
+//#include "stb_image.h"
+#define GLFW_INCLUDE_NONE
 #include "glfw3.h"
 #include "video_common.h"
 #include "video_codec.h"
 #include "memory_pool.h"
 #include "clock.h"
 
+#include "gl_vertex_array.hpp"
+#include "gl_vertex_buff.hpp"
+#include "gl_shader.hpp"
+#include "gl_element_attribute.hpp"
+
 #include <vector>
 #include <mutex>
+#include <thread>
+#include <functional>
 
-clock_t *clock = NULL;
+sys_clock_t *ck = NULL;
 std::atomic_int should_update = 0;
+AVFormatContext *fmt_ctx = NULL;
+AVCodecContext  *codec_ctx = NULL;
+std::vector<AVFrame *> video_queue;
+AVRational time_base;
+std::mutex mtx;
+
+int vstream_id = -1;
 
 int OpenFile(const char *filename, AVFormatContext **fmt_ctx, 
     AVCodecContext **codec_ctx) {
@@ -30,11 +46,13 @@ int OpenFile(const char *filename, AVFormatContext **fmt_ctx,
             exit(1);
         }
 
-        int vstream_id = av_find_best_stream(*fmt_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, &codec, 0);
+        vstream_id = av_find_best_stream(*fmt_ctx, AVMEDIA_TYPE_VIDEO, -1, -1, NULL, 0);
         if (vstream_id == AVERROR_STREAM_NOT_FOUND) {
             fprintf(stderr, "can not find video stream id");
             exit(1);
         }
+
+        time_base = (*fmt_ctx)->streams[vstream_id]->time_base;
 
         codec = avcodec_find_decoder((*fmt_ctx)->streams[vstream_id]->codecpar->codec_id);
         if (!codec) {
@@ -86,49 +104,6 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
     // Handle cursor position changes
 }
 
-void decoder_thread(AVFormatContext *fmt_ctx, std::vector<AVFrame*> &queue, std::mutex &mtx) {
-    AVPacket *pkt = NULL;
-    pkt = av_packet_alloc();
-    ret = 0;
-    while((ret = av_read_frame(fmt_ctx, pkt)) >= 0) {
-        int ret = 0;
-        AVFrame *frame = av_frame_alloc();
-        // 把AVPacket 送进 解码器
-        ret = avcodec_send_packet(codec_ctx, pkt);
-        if (ret < 0) {
-            char errbuf[AV_ERROR_MAX_STRING_SIZE]{0};
-            av_make_error_string(errbuf, AV_ERROR_MAX_STRING_SIZE, ret);
-            fprintf(stderr, "Error submitting a packet for decoding (%s)\n", errbuf);
-            return -1;
-        }
-
-        while (ret >= 0) {
-            ret = avcodec_receive_frame(codec_ctx, frame);
-            if (ret < 0) {
-                return ret;
-            }
-            if (codec_ctx->codec_type == AVMEDIA_TYPE_VIDEO) {
-                std::unique_lock<std::mutex> lk(mtx);
-                queue.push_back(frame);
-            }
-        }
-        av_packet_unref(pkt);
-        // update timer
-        tick_clock(clock);
-        int64_t pts = transform_clock_to_video_pts(clock, frame->time_base.den, 30);
-        {
-            std::unique_lock<std::mutex> lk(mtx);
-            if (!queue.empty() && 
-                queue[0].pts <= pts) {
-                should_update = 1;
-            }
-        }
-    }
-}
-
-std::vector<AVFrame *> video_queue;
-std::mutex mtx;
-
 AVFrame* vframe_to_rgb(AVFrame *frame) {
     // 假设avFrame是一个有效的AVFrame，已经包含了解码后的视频帧数据
     AVFrame* rgbFrame;
@@ -147,7 +122,7 @@ AVFrame* vframe_to_rgb(AVFrame *frame) {
 
     // 创建格式转换上下文
     if (sws_ctx == NULL) {
-        sws_ctx = sws_getContext(videoWidth, videoHeight, frame->format,
+        sws_ctx = sws_getContext(videoWidth, videoHeight, (AVPixelFormat)frame->format,
                                 videoWidth, videoHeight, AV_PIX_FMT_RGB24,
                                 SWS_BILINEAR, NULL, NULL, NULL);
     }
@@ -159,20 +134,91 @@ AVFrame* vframe_to_rgb(AVFrame *frame) {
     return rgbFrame;
 };
 
-void frame_to_texture(AVFrame * frame) {
+void frame_to_texture(AVFrame * frame, GLuint texID, GLuint slot) {
     // 在OpenGL中创建纹理
-    GLuint texID;
-    glGenTextures(1, &texID);
+    glActiveTexture(slot);
     glBindTexture(GL_TEXTURE_2D, texID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, frame->width, frame->height, 0, GL_RGB, GL_UNSIGNED_BYTE, frame->data[0]);
-
+    printf("width %d, height %d %d\n", codec_ctx->width, codec_ctx->height, 
+    frame->linesize[0]);
     // 设置纹理参数
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, codec_ctx->width, codec_ctx->height, 0, GL_RGB, GL_UNSIGNED_BYTE, &frame->data[0][0]);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 
+
+int decoder_thread(AVFormatContext *fmt_ctx, std::vector<AVFrame*> &queue, std::mutex &mtx) {
+    static AVPacket *pkt = NULL;
+    if (NULL == pkt) {
+        pkt = av_packet_alloc();
+    }
+    int ret = 0;
+    if((ret = av_read_frame(fmt_ctx, pkt)) >= 0) {
+        int ret = 0;
+        static AVFrame *frame;
+        if (frame == NULL) {
+            frame = av_frame_alloc();
+        }
+        // 把AVPacket 送进 解码器
+        if (vstream_id == pkt->stream_index) {
+        } else {
+            return 0;
+        }
+
+        printf("vsid %d, psid %d\n", vstream_id, pkt->stream_index);
+        ret = avcodec_send_packet(codec_ctx, pkt);
+        if (ret < 0) {
+            char errbuf[AV_ERROR_MAX_STRING_SIZE]{0};
+            av_make_error_string(errbuf, AV_ERROR_MAX_STRING_SIZE, ret);
+            fprintf(stderr, "Error submitting a packet for decoding (%s)\n", errbuf);
+            return -1;
+        }
+
+        do {
+            ret = avcodec_receive_frame(codec_ctx, frame);
+            if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN)) {
+                fprintf(stderr, "no error or no data\n");
+                return -2;
+            }
+            if (ret < 0) {
+                fprintf(stderr, "failed to receive frame from dec\n");
+                av_packet_unref(pkt);
+                return -1;
+            }
+
+            const char* pix_fmt_name = av_get_pix_fmt_name((enum AVPixelFormat)frame->format);
+            fprintf(stderr, "frame format: %s, %d \n", pix_fmt_name, frame->pts);
+            if (codec_ctx->codec_type == AVMEDIA_TYPE_VIDEO) {
+                AVFrame* rgb_frame = vframe_to_rgb(frame);
+                std::unique_lock<std::mutex> lk(mtx);
+                queue.push_back(rgb_frame);
+
+                tick_clock(ck);
+                int64_t pts = transform_clock_to_video_pts(ck, codec_ctx->time_base.den, codec_ctx->time_base.num, 30);
+                printf("pts: %llu\n", pts);
+                {
+                    if (false == video_queue.empty()) {
+                        fprintf(stderr, "should update\n");
+                        should_update = 1;
+                    }
+                }
+            }
+            fprintf(stderr, "dec end1\n");
+            av_frame_unref(frame);
+        }while (ret >= 0);
+        fprintf(stderr, "dec end\n");
+        av_packet_unref(pkt);
+        // update timer
+    }
+    return 0;
+}
 
 int main() {
     int xpos, ypos, width, height;
@@ -184,16 +230,17 @@ int main() {
         exit(1);
     }
 
-    create_clock(clock, clock_t::TIMEUNIT::MILLISECONDS, nullptr);
+    create_clock(&ck, TIMEUNIT::MILLISECONDS, nullptr);
 
     glfwWindowHint(GLFW_DECORATED, GL_TRUE);
     glfwGetMonitorWorkarea(glfwGetPrimaryMonitor(), 
         &xpos, &ypos, &width, &height);
     
-    const int h = height / 5;
-    const int w = width / 5;
-    xpos += w * 2;
-    ypos += h * 2;
+    const int h = height / 2;
+    const int w = width / 2;
+
+    xpos += 50;
+    ypos += 50;
 
     glfwWindowHint(GLFW_FOCUS_ON_SHOW, GL_TRUE);
     glfwWindowHint(GLFW_POSITION_X, xpos);
@@ -224,15 +271,75 @@ int main() {
     // Register the cursor position callback
     glfwSetCursorPosCallback(window, cursor_position_callback);
 
-    glClearColor(1.f, 1.f, 1.f, 1.f);
+float vertices[] = {
+    // 顶点位置    // 纹理坐标
+    -0.7f,  0.7f, 0.f,   0.0f, 1.0f,  // 左上角
+    -0.7f, -0.7f, 0.f,   0.0f, 0.0f,  // 左下角
+     0.7f, -0.7f, 0.f,   1.0f, 0.0f,  // 右下角
 
+    -0.7f,  0.7f, 0.f,   0.0f, 1.0f,  // 左上角
+     0.7f, -0.7f, 0.f,   1.0f, 0.0f,  // 右下角
+     0.7f,  0.7f, 0.f,   1.0f, 1.0f   // 右上角
+};
+
+    glm::mat4 proj = glm::mat4(1.f);//glm::ortho(-1.0f, 1.0f, -1.f, 1.f, -10.f, 10.f);
+    glm::mat4 model = glm::mat4(1.f);
+    glm::mat4 view = glm::mat4(1.f);
+
+    glm::mat4 mvp = model * view * proj;
+
+    GLCALL(glClearColor(1.f, 1.f, 1.f, 1.f));
+    GLCALL(glViewport(0, 0, 800, 600));
+
+    Shader shader("./video.glsl");
+    VertexArray vao;
+    VertexBuffer vbo;
+    ElementAttribute attribs;
+    attribs.Push<float>(3); // vertex 
+    attribs.Push<float>(2); // texture 
+    vao.Use();
+    vbo.Use();
+    vao.SetAttribute(attribs);
+    vbo.SetData(vertices, sizeof(float) * 30, GL_FLOAT);
+
+    vao.UnUse();
+    vbo.UnUse();
+
+    GLuint texID;
+    GLCALL(glGenTextures(1, &texID));
+
+    // 视频初始化
+
+    OpenFile("test.mp4", &fmt_ctx, &codec_ctx);
+    
+    //std::thread dec_thread(decoder_thread, fmt_ctx, std::ref(video_queue) ,std::ref(mtx));
+    should_update = 1;
+    static int cnt = 0;
     while(1) {
-        glClear(GL_COLOR_BUFFER_BIT);
+        GLCALL(glClear(GL_COLOR_BUFFER_BIT));
         glfwPollEvents();
-        if (should_update) {
-
+        shader.Use();
+        vao.Use();
+        decoder_thread(fmt_ctx, video_queue, mtx);
+        if (should_update.load()) {
+            std::unique_lock<std::mutex> lk(mtx);
+            if (!video_queue.empty()) {
+                fprintf(stderr, "should up1 not empty\n");
+                auto it = video_queue.begin();
+                AVFrame *frame = *it;
+                video_queue.erase(it);
+                lk.unlock();
+                frame_to_texture(frame, texID, GL_TEXTURE0);
+                av_frame_free(&frame);
+                should_update = 0;
+                shader.BindTexture("texture1", 0);
+                shader.SetMatrix4("mvp", mvp);
+            }
         }
-
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texID);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindTexture(GL_TEXTURE_2D, 0);
         glfwSwapBuffers(window);
     }
 

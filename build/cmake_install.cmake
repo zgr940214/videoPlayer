@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/MiddleW/Desktop/video
+# Install script for directory: C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files/videoPlayer")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/videoPlayer")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/MiddleW/Desktop/video/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/MiddleW/Desktop/videoPlayer/videoPlayer/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
