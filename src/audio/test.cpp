@@ -727,7 +727,9 @@ int main() {
     pkt = av_packet_alloc();
     ret = 0;
     while((ret = av_read_frame(fmt_ctx, pkt)) >= 0) {
-        DecodePacket(dec_ctx, pkt, callback);
+        if (pkt->stream_index == a_stream_id) {
+            DecodePacket(dec_ctx, pkt, callback);
+        }
         av_packet_unref(pkt);
     }
 

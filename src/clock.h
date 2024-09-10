@@ -60,11 +60,17 @@ return pts;
 static inline int transform_clock_to_video_pts(sys_clock_t* clock, int64_t den, int64_t num, int frame_rate) {
     int64_t pts;
 #ifdef _WIN32
-    pts = (int64_t)((double)(clock->tick.load()) / (double)(clock->frequency.QuadPart * (double)den) / (double)num );
+    pts = (clock->tick) * den /(clock->frequency.QuadPart);
     printf("tick %llu, den %llu , num %llu, pts %llu\n", clock->tick.load(), den, num, pts);
 #elif defined(__linux__)
 #endif
     return pts;
 };
+
+static inline int transform_clock_to_seconds(sys_clock_t *clock) {
+    int sec;
+    sec = clock->tick / clock->frequency.QuadPart;
+    return sec;
+}
 
 #endif

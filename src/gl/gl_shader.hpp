@@ -46,7 +46,8 @@ public:
 	enum class Type {
 		VERTEX_SHADER = 0,
 		FRAGMENT_SHADER,
-		GEOMETRY_SHADER
+		GEOMETRY_SHADER,
+		NONE
 	};
 
 private:

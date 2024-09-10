@@ -161,7 +161,7 @@ std::tuple<std::string, std::string, std::string> Shader::ParseShader(const char
 	std::ifstream in(filename);
 	std::stringstream ss[3];
 	std::string str;
-	Type type;
+	Type type = Type::NONE;
 
 	while (!std::getline(in, str).eof()) {
 		if (str.find("vertex shader") != std::string::npos) {
@@ -175,6 +175,8 @@ std::tuple<std::string, std::string, std::string> Shader::ParseShader(const char
 			type = Type::GEOMETRY_SHADER;
 			continue;
 		}
+		if (type == Type::NONE)
+			continue;
 		ss[static_cast<int>(type)] << str << "\n";
 	}
 
