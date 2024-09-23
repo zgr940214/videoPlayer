@@ -38,22 +38,22 @@ ACTUALLY_DEFINE_GUID(IID_IAudioRenderClient, 0xF294ACFC, 0x3146, 0x4483, 0xA7,
 		     0xBF, 0xAD, 0xDC, 0xA7, 0xC2, 0x60, 0xE2);
 
 using audio_callback = std::function<void(AVFrame*)>; 
-AVFormatContext *fmt_ctx = NULL;
-AVCodecContext  *dec_ctx = NULL;
-AVStream        *audio = NULL;
-HANDLE          eventHandle;          
-int             a_stream_id = -1;
-static const char *file_name = "test.mp4";
+AVFormatContext         *fmt_ctx = NULL;
+AVCodecContext          *dec_ctx = NULL;
+AVStream                *audio = NULL;
+HANDLE                  eventHandle;          
+int                     a_stream_id = -1;
+static const char       *file_name = "test.mp4";
 
 struct AudioPlaybackParams {
-    int sampleRate;
-    int numChannels;
-    int bitsPerSample;
-    uint32_t bufferFrameSize;
-    IAudioClient        *audio_client;
-    IAudioRenderClient  *render;
-    WAVEFORMATEX        wfx;  // 音频格式描述符
-    WAVEFORMATEX        *devWfx;
+    int                         sampleRate;
+    int                         numChannels;
+    int                         bitsPerSample;
+    uint32_t                    bufferFrameSize;
+    IAudioClient                *audio_client;
+    IAudioRenderClient          *render;
+    WAVEFORMATEXTENSIBLE        *wfx;  // 音频格式描述符
+    WAVEFORMATEXTENSIBLE        *devWfx;
 };
 
 static inline void SampleFmt2WaveFmt(WORD &WaveFormatTag, enum AVSampleFormat sample_fmt) {
@@ -478,6 +478,8 @@ int InitializeAudioClient(AudioPlaybackParams& params) {
             __FUNCTION__, hr);
             return -1;
     }
+    printf("format %p =====\n", params.devWfx->wFormatTag);
+  
     // 检查输入格式是否支持
     WAVEFORMATEX *close_wfx;
     if (params.devWfx) {
@@ -495,16 +497,16 @@ int InitializeAudioClient(AudioPlaybackParams& params) {
             }
         } else {
             memcpy(params.devWfx, &params.wfx, sizeof(WAVEFORMATEX));
-            params.devWfx->wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
+            params.devWfx->Format.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
         }
     }
 
     DWORD initStreamFlags = (AUDCLNT_STREAMFLAGS_EVENTCALLBACK | AUDCLNT_STREAMFLAGS_AUTOCONVERTPCM
                         | AUDCLNT_STREAMFLAGS_SRC_DEFAULT_QUALITY );
 
-    std::cerr << "\naudio_client wfx: " << "bits per sample: " << params.devWfx->wBitsPerSample
-        << "nsamples :" << params.devWfx->nSamplesPerSec << "\n"
-        <<"block align: " << params.devWfx->nBlockAlign << "format Tag:" << params.devWfx->wFormatTag 
+    std::cerr << "\naudio_client wfx: " << "bits per sample: " << params.devWfx->Format.wBitsPerSample
+        << "nsamples :" << params.devWfx->Format.nSamplesPerSec << "\n"
+        <<"block align: " << params.devWfx->Format.nBlockAlign << "format Tag:" << params.devWfx->Format.wFormatTag 
         <<"\n======================\n";
 
     int buffer_length_msec = 5000;
@@ -696,7 +698,7 @@ HRESULT PlayAudio(AVFrame *frame, AudioPlaybackParams audio_params, AVCodecConte
         // QueryPerformanceCounter(&end);
         // double elapsedTime = (double)(end.QuadPart - start.QuadPart) * 1000.0 / freq.QuadPart;
 
-        Sleep((DWORD)(((double)hnsActualDuration/(double)REFTIMES_PER_MILLISEC)));
+        //Sleep((DWORD)(((double)hnsActualDuration/(double)REFTIMES_PER_MILLISEC)));
     }while(true);
     ssize = 0;
 

@@ -66,6 +66,7 @@ std::vector<AVFrame *> video_queue;
 std::vector<AVFrame *> audio_queue;
 std::mutex vmtx;
 std::mutex amtx;
+struct SwsContext* sws_ctx = NULL;
 sys_clock_t *ck = NULL;
 AVFormatContext *fmt_ctx = NULL;
 AVCodecContext  *a_dec_ctx = NULL;
@@ -360,7 +361,7 @@ int swrAVFrame(AVFrame* frame, AVCodecContext *codec_ctx, WAVEFORMATEX wfx, uint
         return -1;
     }
 
-    printf("delay %d\n",swr_get_delay(swr_ctx, 1000));
+    printf("delay %lld\n",swr_get_delay(swr_ctx, 1000));
     outputSample = input_samples * 2;
     printf("input samples %d\n", input_samples *2);
     outputSample = swr_get_out_samples(swr_ctx, input_samples);
@@ -612,7 +613,7 @@ HRESULT PlayAudio(AVFrame *frame, AudioPlaybackParams audio_params, AVCodecConte
 
     bufferFrameCount = audio_params.bufferFrameSize;
     // 获取音频帧数据
-    printf("pts:%d, pkt-dts:%d\n", frame->pts, frame->pkt_dts);
+    printf("pts:%lld, pkt-dts:%lld\n", frame->pts, frame->pkt_dts);
     // printf("nbsamples %d, chns %d, sampleSize %d, frameSize: %d \n", 
     //     frame->nb_samples, frame->channels, sampleSize, frameSize);
     int num_samples = frame->nb_samples;  // 获取 AVFrame 中的样本数量
@@ -786,7 +787,7 @@ int OpenFile(const char *filename, AVFormatContext **fmt_ctx,
                     av_get_media_type_string(AVMEDIA_TYPE_VIDEO));
             return ret;
         }
-
+    return 0;
 }   
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -814,22 +815,24 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
     // Handle cursor position changes
 }
 
-AVFrame* vframe_to_rgb(AVFrame *frame) {
+int vframe_to_rgb(AVFrame *frame, AVFrame **rgbFrame) {
     // 假设avFrame是一个有效的AVFrame，已经包含了解码后的视频帧数据
-    AVFrame* rgbFrame;
-    static struct SwsContext* sws_ctx = NULL;
 
     int videoWidth = frame->width;
     int videoHeight = frame->height;
 
-    // 为RGB帧分配内存
-    rgbFrame = av_frame_alloc();
-    rgbFrame->pts = frame->pts;
-    int numBytes = av_image_get_buffer_size(AV_PIX_FMT_RGB24, videoWidth, videoHeight, 32);
-    uint8_t* buffer = (uint8_t*)av_malloc(numBytes * sizeof(uint8_t));
+  // 为RGB帧分配AVFrame结构体
+    *rgbFrame = av_frame_alloc();
+    (*rgbFrame)->width = videoWidth;
+    (*rgbFrame)->height = videoHeight;
+    (*rgbFrame)->format = AV_PIX_FMT_RGB24;
+    (*rgbFrame)->pts = frame->pts;
 
-    // 设置RGB帧的数据和格式
-    av_image_fill_arrays(rgbFrame->data, rgbFrame->linesize, buffer, AV_PIX_FMT_RGB24, videoWidth, videoHeight, 32);
+    // 使用 av_frame_get_buffer 让 AVFrame 自己管理内存
+    if (av_frame_get_buffer(*rgbFrame, 32) < 0) {
+        av_frame_free(rgbFrame);
+        return {};  // 内存分配失败，错误处理
+    }
 
     // 创建格式转换上下文
     if (sws_ctx == NULL) {
@@ -838,26 +841,26 @@ AVFrame* vframe_to_rgb(AVFrame *frame) {
                                 SWS_BILINEAR, NULL, NULL, NULL);
     }
 
-    // 转换颜色格式
+    //转换颜色格式
     sws_scale(sws_ctx, (uint8_t const* const*)frame->data,
             frame->linesize, 0, videoHeight,
-            rgbFrame->data, rgbFrame->linesize);
-    return rgbFrame;
+            (*rgbFrame)->data, (*rgbFrame)->linesize);
+
+    return 0;
 };
 
 void frame_to_texture(AVFrame * frame, GLuint texID, GLuint slot) {
     // 在OpenGL中创建纹理
     glActiveTexture(slot);
     glBindTexture(GL_TEXTURE_2D, texID);
-    printf("width %d, height %d %d\n", v_dec_ctx->width, v_dec_ctx->height, 
-    frame->linesize[0]);
+
     // 设置纹理参数
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, v_dec_ctx->width, v_dec_ctx->height, 0, GL_RGB, GL_UNSIGNED_BYTE, &frame->data[0][0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, v_dec_ctx->width, v_dec_ctx->height, 0, GL_RGB, GL_UNSIGNED_BYTE, frame->data[0]);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -865,14 +868,13 @@ void frame_to_texture(AVFrame * frame, GLuint texID, GLuint slot) {
 
 
 
-int decoder_thread(AVFormatContext *fmt_ctx, std::vector<AVFrame*> &queue, std::mutex &vmtx) {
+int decoder_thread() {
     static AVPacket *pkt = NULL;
     if (NULL == pkt) {
         pkt = av_packet_alloc();
     }
     int ret = 0;
     while((ret = av_read_frame(fmt_ctx, pkt)) >= 0) {
-        int ret = 0;
         // 把AVPacket 送进 解码器
         if (pkt->stream_index == v_stream_id) {
             ret = avcodec_send_packet(v_dec_ctx, pkt);
@@ -894,27 +896,27 @@ int decoder_thread(AVFormatContext *fmt_ctx, std::vector<AVFrame*> &queue, std::
 
         do {
             AVFrame *frame = av_frame_alloc();
-            if (pkt->stream_index == v_stream_id) {
+            if (pkt->stream_index == v_stream_id ) {
                 ret = avcodec_receive_frame(v_dec_ctx, frame);
                 if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN)) {
                     fprintf(stderr, "no error or no data\n");
-                    return -2;
+                    break;
                 }
                 if (ret < 0) {
                     fprintf(stderr, "failed to receive frame from dec\n");
                     av_packet_unref(pkt);
                     return -1;
                 }   
-                AVFrame* rgb_frame = vframe_to_rgb(frame);
-                    std::unique_lock<std::mutex> lk(vmtx);
-                    queue.push_back(rgb_frame);
+                std::unique_lock<std::mutex> lk(vmtx);
+                AVFrame * tmp = av_frame_alloc();
+                video_queue.push_back(tmp);
                 av_frame_free(&frame);
             } else if (pkt->stream_index == a_stream_id){
                 //DecodePacket(a_dec_ctx, pkt, cb);
                 ret = avcodec_receive_frame(a_dec_ctx, frame);
                 if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN)) {
                     fprintf(stderr, "no error or no data\n");
-                    return -2;
+                    break;
                 }
                 if (ret < 0) {
                     fprintf(stderr, "failed to receive frame from dec\n");
@@ -923,10 +925,8 @@ int decoder_thread(AVFormatContext *fmt_ctx, std::vector<AVFrame*> &queue, std::
                 }   
                 std::unique_lock<std::mutex> lk(amtx);
                 audio_queue.push_back(frame);
-                printf("audio pts: %d\n", audio_queue[0]->pts);
+                printf("audio pts: %lld\n", audio_queue[0]->pts);
             }
-            // const char* pix_fmt_name = av_get_pix_fmt_name((enum AVPixelFormat)frame->format);
-            // fprintf(stderr, "frame format: %s, %d \n", pix_fmt_name, frame->pts);
         }while (ret >= 0);
         av_packet_unref(pkt);
         // update timer
@@ -943,7 +943,7 @@ static void audio_thread_fn(audio_callback callback) {
             audio_queue.erase(it);
             alk.unlock();
             callback(frame);
-
+            av_frame_free(&frame);
         }
     }
 }
@@ -982,6 +982,7 @@ int main() {
     if (!window) {
         glfwGetError(&description);
         fprintf(stderr, "glfwCreateWindow error: %s\n", description);
+        getchar();
         glfwTerminate();
         exit(1);
     }
@@ -1024,6 +1025,9 @@ float vertices[] = {
     GLCALL(glViewport(0, 0, w, h));
 
     Shader shader("./video.glsl");
+    shader.Use();
+    shader.BindTexture("texture1", 0);
+    shader.UnUse();
     VertexArray vao;
     VertexBuffer vbo;
     ElementAttribute attribs;
@@ -1047,7 +1051,8 @@ float vertices[] = {
     InitializeAudioParams(params, a_dec_ctx);
     ret = InitializeAudioClient(params);
     if (ret) {
-        getchar();
+        printf("failed to initialize audio client\n");
+        exit(1);
     }
     // printf("time_base %d, %d, %d, %d, %d\n", fmt_ctx->streams[vstream_id]->time_base.den,
     //     fmt_ctx->streams[vstream_id]->time_base.num, codec_ctx->time_base.den,
@@ -1056,7 +1061,6 @@ float vertices[] = {
     //std::thread audio_thread(audio_thread_fn);
     //std::thread dec_thread(decoder_thread, fmt_ctx, std::ref(video_queue) ,std::ref(vmtx), callback);
     audio_callback callback = [&](AVFrame *frame) {
-        printf("play audio\n");
         PlayAudio(frame, params, a_dec_ctx);
     };
 
@@ -1066,6 +1070,7 @@ float vertices[] = {
     int last_sec = 0;
     int fcnt = 0;
     std::thread at(audio_thread_fn, callback);
+    std::thread dec(decoder_thread);
     start_clock(ck);
     while(1) {
         GLCALL(glClear(GL_COLOR_BUFFER_BIT));
@@ -1081,21 +1086,59 @@ float vertices[] = {
             fcnt = 0;
         }
 
-        decoder_thread(fmt_ctx, video_queue, vmtx);
+        //decoder_thread(fmt_ctx, video_queue, vmtx);
         {
-            //std::unique_lock<std::mutex> lk(vmtx);
+            std::unique_lock<std::mutex> lk(vmtx);
             size_t pts = transform_clock_to_video_pts(ck, fmt_ctx->streams[v_stream_id]->time_base.den, 
                 1, 25);
             if (!video_queue.empty() && video_queue[0]->pts <= pts) {
                 auto it = video_queue.begin();
-                AVFrame *frame = *it;
+                AVFrame *frame = video_queue[0];
                 video_queue.erase(it);
-                //lk.unlock();
+                lk.unlock();
+                AVFrame* rgbFrame;
+                //vframe_to_rgb(frame, &rgb_frame);
+                
+                 // 假设avFrame是一个有效的AVFrame，已经包含了解码后的视频帧数据
+
+                int videoWidth = frame->width;
+                int videoHeight = frame->height;
+
+            // 为RGB帧分配AVFrame结构体
+                rgbFrame = av_frame_alloc();
+                rgbFrame->width = videoWidth;
+                rgbFrame->height = videoHeight;
+                rgbFrame->format = AV_PIX_FMT_RGB24;
+                rgbFrame->pts = frame->pts;
+
+                // 使用 av_frame_get_buffer 让 AVFrame 自己管理内存
+                // size_t size = av_image_get_buffer_size((AVPixelFormat)rgbFrame->format, 
+                //     rgbFrame->width, rgbFrame->height, 32);
+
+                //uint8_t *ptr = (uint8_t *)malloc(size);
+
+                // av_image_fill_arrays(rgbFrame->data, rgbFrame->linesize, 
+                //     ptr, (AVPixelFormat)(rgbFrame->format), rgbFrame->width, 
+                //     rgbFrame->height, 32);
+
+
+                av_frame_free(&rgbFrame);
+                //free(ptr);
+                // // 创建格式转换上下文
+                // if (sws_ctx == NULL) {
+                //     sws_ctx = sws_getContext(videoWidth, videoHeight, (AVPixelFormat)frame->format,
+                //                             videoWidth, videoHeight, AV_PIX_FMT_RGB24,
+                //                             SWS_BILINEAR, NULL, NULL, NULL);
+                // }
+
+                // //转换颜色格式
+                // sws_scale(sws_ctx, (uint8_t const* const*)frame->data,
+                //         frame->linesize, 0, videoHeight,
+                //         rgbFrame->data, rgbFrame->linesize);
+                
                 fcnt++;
-                frame_to_texture(frame, texID, GL_TEXTURE0);
-                av_frame_free(&frame);
-                should_update = 0;
-                shader.BindTexture("texture1", 0);
+                //frame_to_texture(rgbFrame, texID, GL_TEXTURE0);
+                //av_free(frame->data[0]);
                 shader.SetMatrix4("mvp", mvp);
             }
         }

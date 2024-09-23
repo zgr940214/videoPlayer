@@ -19,18 +19,18 @@
     #pragma comment(lib, "winmm.lib")
 
     typedef struct AudioDeviceWin32 {
-        IAudioClient        *client;
-        IAudioRenderClient  *render;
-        WAVEFORMATEX        *wfx; // 默认设备格式
-        WAVEFORMATEX        *inputWfx; // 输入格式
-        int                 need_resample; // 是否需要格式转换
-        size_t              numBuffers;
-        size_t              currentBuffer;
-        CRITICAL_SECTION    cs;      // 互斥
-        HANDLE              event;  //同步事件
+        IAudioClient                *client;
+        IAudioRenderClient          *render;
+        WAVEFORMATEX                *wfx; // 默认设备格式 CoTaskMemAlloc
+        WAVEFORMATEX                *inputWfx; // 输入格式 CoTaskMemAlloc
+        int                         need_resample; // 是否需要格式转换
+        size_t                      numBuffers;
+        size_t                      currentBuffer;
+        CRITICAL_SECTION            cs;      // 互斥
+        HANDLE                      event;  //同步事件
     } audio_device_t;
 
-    int ConvertWfx2AudioFormat(WAVEFORMATEX *wfx, audio_format_info_t *info);
+    int ConvertWfx2AudioFormat(WAVEFORMATEXTENSIBLE *wfx, audio_format_info_t *info);
 
 #elif defined(__linux__)
 

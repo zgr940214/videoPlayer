@@ -83,28 +83,53 @@ class AudioDeviceNotification : public IMMNotificationClient {
 /// @brief 通过wfx结构来简单的推测出AVSampleFormat格式
 /// @param wfx wasapi的设备音频格式
 /// @return ffmpeg AVSampleFormat
-static AVSampleFormat GuessSampleFormat(WAVEFORMATEX *wfx) {
-    // 检查采样点的位宽和通道数
-    switch (wfx->wBitsPerSample) {
+static AVSampleFormat GuessSampleFormat(WAVEFORMATEXTENSIBLE *pwfe) {
+    switch (pwfe->Format.wBitsPerSample) {
         case 8:
-            // 8位采样数据，通常是无符号的
-            return wfx->nChannels > 1 ? AV_SAMPLE_FMT_U8P : AV_SAMPLE_FMT_U8;
+            return AV_SAMPLE_FMT_U8;
+
         case 16:
-            // 16位采样数据，通常是有符号的
-            return wfx->nChannels > 1 ? AV_SAMPLE_FMT_S16P : AV_SAMPLE_FMT_S16;
+            return AV_SAMPLE_FMT_S16;
+
         case 24:
-            // 24位采样数据，以 32 位整数存储，但有效数据为低 24 位
-            return wfx->nChannels > 1 ? AV_SAMPLE_FMT_S32P : AV_SAMPLE_FMT_S32;
         case 32:
-            // 32位采样数据，可以是整数或浮点
-            // 这里我们假设如果 wFormatTag 是 WAVE_FORMAT_IEEE_FLOAT，则使用浮点格式
-            if (wfx->wFormatTag == WAVE_FORMAT_IEEE_FLOAT)
-                return wfx->nChannels > 1 ? AV_SAMPLE_FMT_FLTP : AV_SAMPLE_FMT_FLT;
-            else
-                return wfx->nChannels > 1 ? AV_SAMPLE_FMT_S32P : AV_SAMPLE_FMT_S32;
+            if (pwfe->Format.wFormatTag == WAVE_FORMAT_IEEE_FLOAT || 
+                (pwfe->Format.wFormatTag == WAVE_FORMAT_EXTENSIBLE &&
+                pwfe->SubFormat == KSDATAFORMAT_SUBTYPE_IEEE_FLOAT)) {
+                    return AV_SAMPLE_FMT_FLT;
+            } else {
+                return AV_SAMPLE_FMT_S32;
+            }
+
         default:
-            // 如果没有匹配的格式，返回错误或未知格式
-            return AV_SAMPLE_FMT_NONE;
+            break;
+    }
+
+};
+
+uint32_t ChannelMask(int channels) {
+     switch (channels) {
+        case 1:
+            return SPEAKER_FRONT_CENTER; // 单声道
+        case 2:
+            return SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT; // 立体声
+        case 3:
+            return SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_LOW_FREQUENCY; // 2.1声道 (左右前+低频)
+        case 4:
+            return SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT; // 四声道 (左右前+左右后)
+        case 5:
+            return SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT | SPEAKER_FRONT_CENTER; // 5.0声道 (左右前+中心+左右后)
+        case 6:
+            return SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT 
+                | SPEAKER_FRONT_CENTER | SPEAKER_LOW_FREQUENCY; // 5.0声道 (左右前+中心+左右后)
+        case 7:
+            return SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT 
+                | SPEAKER_FRONT_CENTER | SPEAKER_BACK_CENTER | SPEAKER_LOW_FREQUENCY; // 6.1声道 (左右前+中心+低频+左右后+后中)
+        case 8:
+            return SPEAKER_FRONT_LEFT | SPEAKER_FRONT_RIGHT | SPEAKER_FRONT_CENTER | SPEAKER_LOW_FREQUENCY 
+                | SPEAKER_BACK_LEFT | SPEAKER_BACK_RIGHT | SPEAKER_SIDE_LEFT | SPEAKER_SIDE_RIGHT;  // 7.1声道 (左右前+中心+低频+左右后+左右中)
+        default:
+            return 0; // 未知布局，或者不支持的通道数
     }
 };
 
@@ -139,13 +164,13 @@ uint64_t GuessChannelLayout(int channels) {
 /// @param wfx WAVEFORMATEX 
 /// @param info 项目中的音频格式结构
 /// @return 
-int ConvertWfx2AudioFormat(WAVEFORMATEX *wfx, audio_format_info_t *info) {
-  info->nChannels = wfx->nChannels;
-  info->wBitsPerSample = wfx->wBitsPerSample;
-  info->nSamplesPerSec = wfx->nSamplesPerSec;
+int ConvertWfx2AudioFormat(WAVEFORMATEXTENSIBLE *wfx, audio_format_info_t *info) {
+  info->nChannels = wfx->Format.nChannels;
+  info->wBitsPerSample = wfx->Format.wBitsPerSample;
+  info->nSamplesPerSec = wfx->Format.nSamplesPerSec;
   info->sampleFormat = GuessSampleFormat(wfx);
-  info->chn_layout = GuessChannelLayout(wfx->nChannels);
-  info->nBlockAlign = wfx->nChannels * (wfx->wBitsPerSample / 8);
+  info->chn_layout = GuessChannelLayout(wfx->Format.nChannels);
+  info->nBlockAlign = wfx->Format.nChannels * (wfx->Format.wBitsPerSample / 8);
   //info->nBlocks = 暂时无用
 };
 
@@ -158,38 +183,33 @@ void InitializeCom() {
         }
 };
 
-static inline void SampleFmt2WaveFmt(WORD &WaveFormatTag, enum AVSampleFormat sample_fmt) {
-    switch (sample_fmt) {
-        case AV_SAMPLE_FMT_FLT:
-        case AV_SAMPLE_FMT_FLTP:
-            {
-                WaveFormatTag = WAVE_FORMAT_IEEE_FLOAT;
-                return;
-            }
-        case AV_SAMPLE_FMT_S16:
-        case AV_SAMPLE_FMT_S16P:
-        case AV_SAMPLE_FMT_S32:
-        case AV_SAMPLE_FMT_S32P:
-        default:
-             {
-                WaveFormatTag = WAVE_FORMAT_PCM;
-                return;
-            }
-    }
-}
-
 /// @brief 从ffmpeg AVcodecContext初始化 AudioDevice
 /// @param aDev 
 /// @param codecCtx 
 void InitializeAudioParams(audio_device_t& aDev, AVCodecContext* codecCtx) {
     // 设置WAVE格式
-    aDev.inputWfx->nSamplesPerSec = codecCtx->sample_rate;
-    aDev.inputWfx->wBitsPerSample = av_get_bytes_per_sample(codecCtx->sample_fmt) * 8;
-    aDev.inputWfx->nChannels = codecCtx->ch_layout.nb_channels;
-    aDev.inputWfx->cbSize = 0;
-    SampleFmt2WaveFmt(aDev.inputWfx->wFormatTag, codecCtx->sample_fmt);
-    aDev.inputWfx->nBlockAlign = (aDev.inputWfx->wBitsPerSample / 8) * aDev.inputWfx->nChannels;
-    aDev.inputWfx->nAvgBytesPerSec = aDev.inputWfx->nSamplesPerSec * aDev.inputWfx->nBlockAlign;
+    WAVEFORMATEXTENSIBLE *input_wfx = 
+        (WAVEFORMATEXTENSIBLE *)CoTaskMemAlloc(sizeof(WAVEFORMATEXTENSIBLE));
+    input_wfx->Format.nSamplesPerSec = codecCtx->sample_rate;
+    input_wfx->Format.wBitsPerSample = av_get_bytes_per_sample(codecCtx->sample_fmt) * 8;
+    input_wfx->Format.nChannels = codecCtx->ch_layout.nb_channels;
+
+    input_wfx->Format.nBlockAlign = 
+        (input_wfx->Format.wBitsPerSample / 8) 
+        * input_wfx->Format.nChannels;
+
+    input_wfx->Format.nAvgBytesPerSec = 
+        input_wfx->Format.nSamplesPerSec 
+        * input_wfx->Format.nBlockAlign;
+
+    input_wfx->Format.cbSize = sizeof(*input_wfx) - sizeof(WAVEFORMATEX);
+    input_wfx->Format.wFormatTag = WAVE_FORMAT_EXTENSIBLE;
+
+    input_wfx->SubFormat = KSDATAFORMAT_SUBTYPE_PCM; // 默认pcm格式
+    input_wfx->Samples.wValidBitsPerSample = input_wfx->Format.wBitsPerSample;
+    input_wfx->dwChannelMask = ChannelMask(input_wfx->Format.nChannels);
+
+    aDev.inputWfx = (WAVEFORMATEX *)input_wfx;
 };
 
 /// @brief  打开 IAudioCLient IAudioRenderClien。 
@@ -235,6 +255,7 @@ static int OpenAudioDev(audio_device_t *aDev) {
             __FUNCTION__, hr);
             return -1;
     }
+
     // 检查输入格式是否支持
     WAVEFORMATEX *close_wfx;
     if (aDev->inputWfx) {
@@ -288,7 +309,7 @@ int InitAudioDev(mem_pool_t *pool, AVCodecContext *codec_ctx, audio_device_t **a
         return -1;
     }
     *aDev = (audio_device_t *)mem_alloc(pool, sizeof(audio_device_t), 1);
-    
+  
     InitializeAudioParams(**aDev, codec_ctx);
 
     ret = OpenAudioDev(*aDev);

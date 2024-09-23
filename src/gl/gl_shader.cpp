@@ -175,9 +175,9 @@ std::tuple<std::string, std::string, std::string> Shader::ParseShader(const char
 			type = Type::GEOMETRY_SHADER;
 			continue;
 		}
-		if (type == Type::NONE)
-			continue;
-		ss[static_cast<int>(type)] << str << "\n";
+		if (type != Type::NONE)
+			ss[static_cast<int>(type)] << str << "\n";
+	
 	}
 
 	is_init = true;
