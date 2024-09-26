@@ -2,10 +2,8 @@
 #define _VIDEO_CODEC_H_
 #include "video_common.h"
 
-extern "C" {
-    #include <libavutil/samplefmt.h>
-    #include <libavutil/channel_layout.h>
-}
+#include <libavutil/samplefmt.h>
+#include <libavutil/channel_layout.h>
 
 #ifdef _WIN32
     #include <windows.h>
@@ -23,26 +21,23 @@ extern "C" {
 // 后续可能实现快进 慢进 播放
 
 
-typedef struct video_codec
+typedef struct codec_params
 {
     void                *data;
 
+    // VIDEO_CODEC
     AVCodecContext      *fmv_codec_ctx; // video codec
-    AVCodecContext      *fma_codec_ctx; // audio codec
-
-    AVFrame             *tmp_frame;
-    AVPacket            *tmp_pkt;
-
-    // 视频信息
-    AVPixelFormat       pix_fmt;
+    enum AVPixelFormat  pix_fmt;
     uint8_t             plane_count;
     uint16_t            frame_width;
     uint16_t            frame_height; 
-    //uint32_t            video_line_size;
+    uint32_t            video_line_size;
 
     uint32_t            time_base_numv;
     uint32_t            time_base_denv;
 
+    // AUDIO_CODEC
+    AVCodecContext      *fma_codec_ctx; // audio codec
     uint8_t             channels;   
     uint32_t            samplerate;
     uint32_t            bitrate;
@@ -57,13 +52,13 @@ typedef struct video_codec
 
     uint32_t            time_base_numa;
     uint32_t            time_base_dena;
-} video_codec_t;
+} codec_params_t;
 
 int open_codec_context(int *stream_idx,
     AVCodecContext **dec_ctx, AVFormatContext *fmt_ctx, enum AVMediaType type);
 
 int decode_packet(AVCodecContext *dec, const AVPacket *pkt);
 
-video_codec_t *create_codec_context(void* data);
+codec_params_t *create_codec_context(void* data);
 
 #endif

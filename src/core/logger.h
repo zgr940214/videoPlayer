@@ -1,3 +1,5 @@
+#ifndef _MY_LOGGER_H
+#define _MY_LOGGER_H
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -15,6 +17,8 @@ void base_get_log_handler(log_handler_t *handler, void **params);
 
 void base_set_log_handler(log_handler_t *handler, void* params);
 
-void blogva(int lvl, char *format, va_list args);
+int blogva(int lvl, char *format, va_list args);
 
-void blog(int lvl, char *format, ...);
+int blog(int lvl, char *format, ...);
+
+#endif

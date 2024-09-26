@@ -92,7 +92,7 @@ static int output_video_frame(AVFrame *frame, video_source_t *src)
 {
     int width = src->codec_ctx->frame_width;
     int height = src->codec_ctx->frame_height;
-    AVPixelFormat pix_fmt = src->codec_ctx->pix_fmt;
+    enum AVPixelFormat pix_fmt = src->codec_ctx->pix_fmt;
 
     if (frame->width != width || frame->height != height ||
         frame->format != pix_fmt) {
@@ -198,8 +198,8 @@ int avcodec_to_codec_context(video_codec_t *codec_ctx) {
 int create_codec_context(void* data) {
     int ret;
     video_source_t  *src = (video_source_t *)data;
-    video_codec_t   *codec_ctx;
-    src->codec_ctx = mem_alloc(src->pool, sizeof(video_codec_t), 1);
+    codec_params_t   *codec_ctx;
+    src->codec_ctx = mem_alloc(src->pool, sizeof(codec_params_t), 1);
     codec_ctx = src->codec_ctx;
 
     // 初始化 视频解码器context
@@ -209,7 +209,7 @@ int create_codec_context(void* data) {
         fprintf(stderr, "Could not open codec context for video stream\n");
         goto failed;
     }
-    src->vcodec_ctx->data = src;
+    src->codec_ctx->data = src;
     
     // 初始化 音频解码器context
     ret = open_codec_context(&src->fmt_ctx->fm_astream_id, 

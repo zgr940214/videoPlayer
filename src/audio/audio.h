@@ -1,14 +1,14 @@
 #ifndef _AUDIO_SOURCE_H_
 #define _AUDIO_SOURCE_H_
-#include <cstdint>
+#include <stdint.h>
 #include "circular_buf.h"
 #include "memory_pool.h"
 #include "audio_common.h"
 
 #define MAX_AUDIO_CHNS      8
 
-typedef struct audio_source {
-    memory_pool                 *pool;
+typedef struct audio_source_t {
+    mem_pool_t               *pool;
 
     const AVCodecContext        *codec_ctx; //ref
 

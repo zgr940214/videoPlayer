@@ -3,7 +3,7 @@
 #ifndef _VIDEO_H_
 #define _VIDEO_H_
 
-#include <iostream>
+#include <stdio.h>
 #include <string.h>
 
 #include "video_common.h"
@@ -32,7 +32,7 @@ typedef struct video_source {
     void                        *data;
     const char                  *file_name;
     video_format_context_t      *fmt_ctx;
-    video_codec_t               *codec_ctx;
+    codec_params_t               *codec_ctx;
 
     cqueue_t                    *vframe_queue;
     cqueue_t                    *aframe_queue;

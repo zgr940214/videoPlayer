@@ -1,5 +1,7 @@
 #include "logger.h"
 
+void def_log_handler(int lvl, char *msg, va_list args, void* meta);
+
 static void *meta = NULL;
 static log_handler_t log_handler = def_log_handler;
 
@@ -47,14 +49,17 @@ void base_set_log_handler(log_handler_t *handler, void* params) {
         meta = params;
 }
 
-void blogva(int lvl, char *format, va_list args) {
+int blogva(int lvl, char *format, va_list args) {
     log_handler(lvl, format, args, meta);
+    return 0;
 }
 
-void blog(int lvl, char *format, ...) {
+int blog(int lvl, char *format, ...) {
     va_list args;
 
     va_start(args, format);
     blogva(lvl, format, args);
     va_end(args);
+
+    return 0;
 }

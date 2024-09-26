@@ -2,18 +2,17 @@
 #define _AUDIO_RESAMPLER_H_
 
 #include "audio_common.h"
-extern "C" {
-    #include <libavutil/avutil.h>
-    #include <libavformat/avformat.h>
-	#include <libavutil/opt.h>
-	#include <libavutil/channel_layout.h>
-	#include <libavutil/samplefmt.h>
-    #include <libswresample/swresample.h>
-}
+#include <libavutil/avutil.h>
+#include <libavformat/avformat.h>
+#include <libavutil/opt.h>
+#include <libavutil/channel_layout.h>
+#include <libavutil/samplefmt.h>
+#include <libswresample/swresample.h>
+
 
 #define MAX_AV_PLANES 8
 
-typedef struct audio_resampler {
+typedef struct audio_resampler_t {
 	void							*data; 	// audio_source_t
     struct SwrContext       		*context;
 	
